@@ -8,7 +8,6 @@ GREEN='\033[0;32m'
 
 BGX="\033[42m"
 UPDATE="https://raw.githubusercontent.com/feely666/aio/main/"
-UDPCORE="https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1S3IE25v_fyUfCLslnujFBSBMNunDHDk2' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1S3IE25v_fyUfCLslnujFBSBMNunDHDk2"
 clear
 echo -e " \033[34m${NC}"
 echo -e "  ${Blue}[01] ${NC}${GREEN}RUNNING SERVICE${NC}"
@@ -38,7 +37,7 @@ case $menu in
     run
     ;;
 2) clear ;
-    wget --load-cookies /tmp/cookies.txt ${UDPCORE} -O install-udp && rm -rf /tmp/cookies.txt && chmod +x install-udp && ./install-udp
+    wget -q https://raw.githubusercontent.com/feely666/udp-custom/main/udp-custom.sh && chmod +x udp-custom.sh && ./udp-custom.sh $(netstat -uln | grep 'udp' | awk '{print $4}' | awk -F: '{print $NF}' | sort -n | uniq | paste -sd ',' -)
     ;;
 3) clear ;
     menu
