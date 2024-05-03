@@ -1,0 +1,106 @@
+#!/bin/bash
+clear
+RED='\033[0;31m'
+NC='\e[0m'
+gray="\e[1;30m"
+Blue="\033[1;36m"
+GREEN='\033[0;32m'
+
+BGX="\033[42m"
+UPDATE="https://raw.githubusercontent.com/feely666/aio/main/"
+UDPCORE="https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1S3IE25v_fyUfCLslnujFBSBMNunDHDk2' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1S3IE25v_fyUfCLslnujFBSBMNunDHDk2"
+clear
+echo -e " \033[34m${NC}"
+echo -e "  ${Blue}[01] ${NC}${GREEN}RUNNING SERVICE${NC}"
+echo -e "  ${Blue}[02] ${NC}${GREEN}INSTALL UDP ${NC}"
+echo -e "  ${Blue}[04] ${NC}${GREEN}UPDATE SCRIPT ${NC}"
+echo -e "  ${Blue}[05] ${NC}${GREEN}RESTART SERVICE${NC}"
+echo -e "  ${Blue}[06] ${NC}${GREEN}CHANGE BANNER${NC}"
+echo -e "  ${Blue}[07] ${NC}${GREEN}CHANGE DOMAIN${NC}"
+echo -e "  ${Blue}[08] ${NC}${GREEN}FIX MISSING POINTING DOMAIN${NC}"
+echo -e "  ${Blue}[09] ${NC}${GREEN}CLEAR LOGS${NC}"
+echo -e "  ${Blue}[10] ${NC}${GREEN}CLEAR CACHE${NC}"
+echo -e "  ${Blue}[11] ${NC}${GREEN}DELL ALL EXP${NC}"
+echo -e "  ${Blue}[13] ${NC}${GREEN}CEK CPU${NC}"
+echo -e "  ${Blue}[14] ${NC}${GREEN}INSTALL DNS NONTON ${NC}"
+echo -e "  ${Blue}[15] ${NC}${GREEN}AUTO REBOOT ${NC}"
+echo -e "  ${Blue}[16] ${NC}${GREEN}INFO PORT ${NC}"
+echo -e "  ${Blue}[18] ${NC}${GREEN}SPEEDTEST ${NC}"
+echo -e "  ${Blue}[19] ${NC}${GREEN}CHECK BANDWITH ${NC}"
+echo -e "  ${Blue}[20] ${NC}${GREEN}LIMIT SPEED ${NC}"
+echo -e " \033[36m${NC}"
+echo -e ""
+echo -e "  ${Blue}[0] ${NC} ${GREEN}Back To Menu${NC}"
+echo -e ""
+read -p "  Select From Options [ 1 - 16 or 0 back to menu ] : " menu
+case $menu in
+1) clear ;
+    run
+    ;;
+2) clear ;
+    wget --load-cookies /tmp/cookies.txt ${UDPCORE} -O install-udp && rm -rf /tmp/cookies.txt && chmod +x install-udp && ./install-udp
+    ;;
+3) clear ;
+    menu
+    ;;    
+4) clear ;   
+    wget ${UPDATE}update.sh && chmod +x update.sh && ./update.sh
+    ;;
+5) clear ;    
+    reset
+    ;;
+6) clear ;   
+    nano /etc/xox.txt
+    ;;
+7) clear ; 
+    addhost
+    ;;
+8) clear ;
+   fixcert
+   ;;
+9) clear ;
+   clearlog
+   ;;
+10) clear ;
+   clearcache
+   ;;
+11) clear ;
+   xp
+    ;;
+12) clear ;
+   menu
+   ;;
+13) clear ;
+   gotop
+   ;;
+14) clear ;
+   wget https://raw.githubusercontent.com/feely666/aio/main/nonton.sh && chmod +x nonton.sh && ./nonton.sh
+   ;;
+15) clear ;
+   autoreboot
+   ;;  
+16) clear ;
+   prot
+   ;;
+17) clear ;
+   menu
+   ;;
+18) clear ;
+   speedtest
+   ;;
+19) clear ;
+   bw
+   ;;
+20) clear ;
+   limitspeed
+   ;;
+21) clear ;
+   menu-backup
+   ;;
+0) clear ;
+   menu
+   ;;
+*) clear ;
+    menu
+    ;;
+esac
