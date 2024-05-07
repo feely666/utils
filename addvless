@@ -4,8 +4,8 @@ RED="\033[31m"
 YELLOW="\033[33m"
 BLUE="\033[36m"
 FONT="\033[0m"
-NS=$( cat /etc/xray/dns )
-PUB=$( cat /etc/slowdns/server.pub )
+NS=$(cat /etc/xray/dns)
+PUB=$(cat /etc/slowdns/server.pub)
 GREENBG="\033[42;37m"
 REDBG="\033[41;37m"
 OK="${Green}--->${FONT}"
@@ -36,25 +36,25 @@ red() { echo -e "\\033[32;1m${*}\\033[0m"; }
 domain=$(cat /etc/xray/domain)
 clear
 until [[ $user =~ ^[a-zA-Z0-9_]+$ && ${CLIENT_EXISTS} == '0' ]]; do
+ echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━◇\033[0m"
+ echo -e " CREATE VLESS ACCOUNT           "
+ echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━◇\033[0m"
+
+ read -rp "User: " -e user
+ CLIENT_EXISTS=$(grep -w $user /etc/xray/config.json | wc -l)
+
+ if [[ ${CLIENT_EXISTS} == '1' ]]; then
+  clear
   echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━◇\033[0m"
   echo -e " CREATE VLESS ACCOUNT           "
   echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━◇\033[0m"
-
-  read -rp "User: " -e user
-  CLIENT_EXISTS=$(grep -w $user /etc/xray/config.json | wc -l)
-
-  if [[ ${CLIENT_EXISTS} == '1' ]]; then
-    clear
-  echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━◇\033[0m"
-  echo -e " CREATE VLESS ACCOUNT           "
-  echo -e "\033[1;93m◇━━━━━━━━━━━━━━━━━◇\033[0m"
-    echo ""
-    echo "A client with the specified name was already created, please choose another name."
-    echo ""
-    echo -e "\033[0;34m◇━━━━━━━━━━━━━━━━━◇\033[0m"
-    read -n 1 -s -r -p "Press any key to back on menu"
-    menu
-  fi
+  echo ""
+  echo "A client with the specified name was already created, please choose another name."
+  echo ""
+  echo -e "\033[0;34m◇━━━━━━━━━━━━━━━━━◇\033[0m"
+  read -n 1 -s -r -p "Press any key to back on menu"
+  menu
+ fi
 done
 uuid=$(cat /proc/sys/kernel/random/uuid)
 read -p "Expired (days): " masaaktif
@@ -78,33 +78,33 @@ vlesslink1="vless://${uuid}@${domain}:443?path=/vless&security=tls&encryption=no
 vlesslink2="vless://${uuid}@${domain}:80?path=/vless&encryption=none&type=ws#${user}"
 vlesslink3="vless://${uuid}@${domain}:443?mode=gun&security=tls&encryption=none&type=grpc&serviceName=vless-grpc&sni=${domain}#${user}"
 if [ ! -e /etc/vless ]; then
-  mkdir -p /etc/vless
+ mkdir -p /etc/vless
 fi
 
 if [[ $iplimit -gt 0 ]]; then
-mkdir -p /etc/xox/limit/vless/ip
-echo -e "$iplimit" > /etc/xox/limit/vless/ip/$user
+ mkdir -p /etc/xox/limit/vless/ip
+ echo -e "$iplimit" > /etc/xox/limit/vless/ip/$user
 else
-echo > /dev/null
+ echo > /dev/null
 fi
 
 if [ -z ${Quota} ]; then
-  Quota="0"
+ Quota="0"
 fi
 
 c=$(echo "${Quota}" | sed 's/[^0-9]*//g')
-d=$((${c} * 1024 * 1024 * 1024))
+d=$((c * 1024 * 1024 * 1024))
 
 if [[ ${c} != "0" ]]; then
-  echo "${d}" >/etc/vless/${user}
+ echo "${d}" > /etc/vless/${user}
 fi
 DATADB=$(cat /etc/vless/.vless.db | grep "^###" | grep -w "${user}" | awk '{print $2}')
-if [[ "${DATADB}" != '' ]]; then
-  sed -i "/\b${user}\b/d" /etc/vless/.vless.db
+if [[ ${DATADB} != '' ]]; then
+ sed -i "/\b${user}\b/d" /etc/vless/.vless.db
 fi
-echo "### ${user} ${exp} ${uuid} ${Quota} ${iplimit}" >>/etc/vless/.vless.db
+echo "### ${user} ${exp} ${uuid} ${Quota} ${iplimit}" >> /etc/vless/.vless.db
 clear
-cat >/var/www/html/vless-$user.txt <<-END
+cat > /var/www/html/vless-$user.txt <<- END
 
 ◇━━━━━━━━━━━━━━━━━◇
 menu

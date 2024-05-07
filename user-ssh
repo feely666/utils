@@ -5,33 +5,33 @@ IP=$(curl -sS ifconfig.me)
 CITY=$(cat /etc/xray/city)
 clear
 NUMBER_OF_CLIENTS=$(grep -c -E "#ssh# " "/etc/ssh/.ssh.db")
-        if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
-  echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-  echo -e " \e[1;97;101m          CONFIG SSH ACCOUNT          \E[0m"
-  echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-                echo ""
-                echo "You have no existing clients!"
-                clear
-                exit 1
-        fi
+if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
+ echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+ echo -e " \e[1;97;101m          CONFIG SSH ACCOUNT          \E[0m"
+ echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+ echo ""
+ echo "You have no existing clients!"
+ clear
+ exit 1
+fi
 
-  echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-  echo -e "  \e[1;97;101m        CONFIG SSH ACCOUNT         \E[0m"
-  echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-        echo "     No  Expired   User"
-        grep -E "#ssh# " "/etc/ssh/.ssh.db" | cut -d ' ' -f 2-3 | nl -s ') '
-        until [[ ${CLIENT_NUMBER} -ge 1 && ${CLIENT_NUMBER} -le ${NUMBER_OF_CLIENTS} ]]; do
-                if [[ ${CLIENT_NUMBER} == '1' ]]; then
-                        read -rp "Select one client [1]: " CLIENT_NUMBER
-                else
-                        read -rp "Select one client [1-${NUMBER_OF_CLIENTS}]: " CLIENT_NUMBER
-                fi
-        done
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "  \e[1;97;101m        CONFIG SSH ACCOUNT         \E[0m"
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo "     No  Expired   User"
+grep -E "#ssh# " "/etc/ssh/.ssh.db" | cut -d ' ' -f 2-3 | nl -s ') '
+until [[ ${CLIENT_NUMBER} -ge 1 && ${CLIENT_NUMBER} -le ${NUMBER_OF_CLIENTS} ]]; do
+ if [[ ${CLIENT_NUMBER} == '1' ]]; then
+  read -rp "Select one client [1]: " CLIENT_NUMBER
+ else
+  read -rp "Select one client [1-${NUMBER_OF_CLIENTS}]: " CLIENT_NUMBER
+ fi
+done
 user=$(grep -E "#ssh# " "/etc/ssh/.ssh.db" | cut -d ' ' -f 2 | sed -n "${CLIENT_NUMBER}"p)
 domain=$(cat /etc/xray/domain)
 Pass=$(grep "$Pass" /etc/ssh/.ssh.db | cut -b 21-56 | sed -n "${CLIENT_NUMBER}"p)
 exp=$(grep -E "#ssh# " "/etc/ssh/.ssh.db" | cut -d ' ' -f 3 | sed -n "${CLIENT_NUMBER}"p)
-hariini=`date -d "0 days" +"%Y-%m-%d"`
+hariini=$(date -d "0 days" +"%Y-%m-%d")
 
 clear
 echo ""

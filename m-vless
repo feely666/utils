@@ -46,25 +46,31 @@ echo -e "\033[1;93m└───────────────────�
 echo -e ""
 read -p "Select From Options [ 1 - 6 ] : " menu
 case $menu in
-1)  clear ;
-    addvless
-    ;;
-2) clear ;
-    trialvless
-    ;;
-3) clear ;
-    delvless
-    ;;
-4) clear ;
-    renewvless
-    ;;
-5) clear ;
-    cekvless
-    ;;
-6) clear ;
-    user-vless
-    ;;
-*)
-    menu
-    ;;
+ 1)
+  clear
+  addvless
+  ;;
+ 2)
+  clear
+  trialvless
+  ;;
+ 3)
+  clear
+  delvless
+  ;;
+ 4)
+  clear
+  renewvless
+  ;;
+ 5)
+  clear
+  cekvless
+  ;;
+ 6)
+  clear
+  user-vless
+  ;;
+ *)
+  menu
+  ;;
 esac

@@ -35,34 +35,34 @@ clear
 sspwd=$(cat /etc/xray/passwd)
 clear
 source /var/lib/xox/ipvps.conf
-if [[ "$IP" = "" ]]; then
-domain=$(cat /etc/xray/domain)
+if [[ $IP == "" ]]; then
+ domain=$(cat /etc/xray/domain)
 else
-domain=$IP
+ domain=$IP
 fi
 
 #tls="$(cat ~/log-install.txt | grep -w "Sodosok WS/GRPC" | cut -d: -f2|sed 's/ //g')"
 until [[ $user =~ ^[a-zA-Z0-9_]+$ && ${CLIENT_EXISTS} == '0' ]]; do
-echo -e "\033[1;93m┌──────────────────────────────────────────┐\033[0m"
-  echo -e "       CREATE SHADOWSOCKS ACCOUNT        "
-  echo -e "\033[1;93m└──────────────────────────────────────────┘\033[0m"
+ echo -e "\033[1;93m┌──────────────────────────────────────────┐\033[0m"
+ echo -e "       CREATE SHADOWSOCKS ACCOUNT        "
+ echo -e "\033[1;93m└──────────────────────────────────────────┘\033[0m"
 
-		read -rp "User: " -e user
-		CLIENT_EXISTS=$(grep -w $user /etc/xray/config.json | wc -l)
+ read -rp "User: " -e user
+ CLIENT_EXISTS=$(grep -w $user /etc/xray/config.json | wc -l)
 
-		if [[ ${CLIENT_EXISTS} == '1' ]]; then
-clear
-            echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-            echo -e "\\E[0;41;36m      Add Sodosok Ws/Grpc Account      \E[0m"
-            echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-			echo ""
-			echo "A client with the specified name was already created, please choose another name."
-			echo ""
-			echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-			read -n 1 -s -r -p "Press any key to back on menu"
-v2ray-menu
-		fi
-	done
+ if [[ ${CLIENT_EXISTS} == '1' ]]; then
+  clear
+  echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+  echo -e "\\E[0;41;36m      Add Sodosok Ws/Grpc Account      \E[0m"
+  echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+  echo ""
+  echo "A client with the specified name was already created, please choose another name."
+  echo ""
+  echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+  read -n 1 -s -r -p "Press any key to back on menu"
+  v2ray-menu
+ fi
+done
 
 cipher="aes-128-gcm"
 uuid=$(cat /proc/sys/kernel/random/uuid)
@@ -76,7 +76,7 @@ tgl2=$(date +"%d")
 bln2=$(date +"%b")
 thn2=$(date +"%Y")
 tnggl="$tgl2 $bln2, $thn2"
-exp=`date -d "$masaaktif days" +"%Y-%m-%d"`
+exp=$(date -d "$masaaktif days" +"%Y-%m-%d")
 sed -i '/#ssws$/a\#!# '"$user $exp"'\
 },{"password": "'""$uuid""'","method": "'""$cipher""'","email": "'""$user""'"' /etc/xray/config.json
 sed -i '/#ssgrpc$/a\#!# '"$user $exp"'\
@@ -100,7 +100,7 @@ systemctl restart xray
 #buatshadowsocks custom
 rm -rf /tmp/log
 rm -rf /tmp/log1
-cat > /var/www/html/sodosokws-$user.txt <<-END
+cat > /var/www/html/sodosokws-$user.txt <<- END
 { 
  "dns": {
     "servers": [
@@ -207,7 +207,7 @@ cat > /var/www/html/sodosokws-$user.txt <<-END
   "stats": {}
 }
 END
-cat > /var/www/html/sodosokgrpc-$user.txt <<-END
+cat > /var/www/html/sodosokgrpc-$user.txt <<- END
 {
     "dns": {
     "servers": [
@@ -312,27 +312,27 @@ cat > /var/www/html/sodosokgrpc-$user.txt <<-END
   "stats": {}
 }
 END
-systemctl reload xray >/dev/null 2>&1
-service cron restart >/dev/null 2>&1
+systemctl reload xray > /dev/null 2>&1
+service cron restart > /dev/null 2>&1
 if [ ! -e /etc/shadowsocks ]; then
-  mkdir -p /etc/shadowsocks
+ mkdir -p /etc/shadowsocks
 fi
 
 if [ -z ${Quota} ]; then
-  Quota="0"
+ Quota="0"
 fi
 
 c=$(echo "${Quota}" | sed 's/[^0-9]*//g')
-d=$((${c} * 1024 * 1024 * 1024))
+d=$((c * 1024 * 1024 * 1024))
 
 if [[ ${c} != "0" ]]; then
-  echo "${d}" >/etc/shadowsocks/${user}
+ echo "${d}" > /etc/shadowsocks/${user}
 fi
 DATADB=$(cat /etc/shadowsocks/.shadowsocks.db | grep "^###" | grep -w "${user}" | awk '{print $2}')
-if [[ "${DATADB}" != '' ]]; then
-  sed -i "/\b${user}\b/d" /etc/shadowsocks/.shadowsocks.db
+if [[ ${DATADB} != '' ]]; then
+ sed -i "/\b${user}\b/d" /etc/shadowsocks/.shadowsocks.db
 fi
-echo "### ${user} ${exp} ${uuid}" >>/etc/shadowsocks/.shadowsocks.db
+echo "### ${user} ${exp} ${uuid}" >> /etc/shadowsocks/.shadowsocks.db
 clear
 
 clear

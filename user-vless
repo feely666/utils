@@ -6,30 +6,30 @@ NS=$(cat /etc/xray/dns)
 CITY=$(cat /etc/xray/city)
 clear
 NUMBER_OF_CLIENTS=$(grep -c -E "^#& " "/etc/xray/config.json")
-        if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
-    echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo -e " \e[1;97;101m                CONFIG VLESS ACCOUNT                   \e[0m"
-    echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo ""
-    echo "You have no existing clients!"
-    echo ""
-    echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    read -n 1 -s -r -p "Press [ Enter ] to back on menu vless"
-    vless
+if [[ ${NUMBER_OF_CLIENTS} == '0' ]]; then
+ echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+ echo -e " \e[1;97;101m                CONFIG VLESS ACCOUNT                   \e[0m"
+ echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+ echo ""
+ echo "You have no existing clients!"
+ echo ""
+ echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+ read -n 1 -s -r -p "Press [ Enter ] to back on menu vless"
+ vless
 fi
 
-  echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-  echo -e "  \e[1;97;101m        CONFIG VLESS ACCOUNT         \E[0m"
-  echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-        echo "     No  Expired   User"
-        grep -E "^#& " "/etc/xray/config.json" | cut -d ' ' -f 2-3 | nl -s ') '
-        until [[ ${CLIENT_NUMBER} -ge 1 && ${CLIENT_NUMBER} -le ${NUMBER_OF_CLIENTS} ]]; do
-                if [[ ${CLIENT_NUMBER} == '1' ]]; then
-                        read -rp "Select one client [1]: " CLIENT_NUMBER
-                else
-                        read -rp "Select one client [1-${NUMBER_OF_CLIENTS}]: " CLIENT_NUMBER
-                fi
-        done
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "  \e[1;97;101m        CONFIG VLESS ACCOUNT         \E[0m"
+echo -e "\033[1;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo "     No  Expired   User"
+grep -E "^#& " "/etc/xray/config.json" | cut -d ' ' -f 2-3 | nl -s ') '
+until [[ ${CLIENT_NUMBER} -ge 1 && ${CLIENT_NUMBER} -le ${NUMBER_OF_CLIENTS} ]]; do
+ if [[ ${CLIENT_NUMBER} == '1' ]]; then
+  read -rp "Select one client [1]: " CLIENT_NUMBER
+ else
+  read -rp "Select one client [1-${NUMBER_OF_CLIENTS}]: " CLIENT_NUMBER
+ fi
+done
 user=$(grep -E "^#& " "/etc/xray/config.json" | cut -d ' ' -f 2 | sed -n "${CLIENT_NUMBER}"p)
 domain=$(cat /etc/xray/domain)
 iplim=$(cat /etc/xox/limit/vless/ip/$user)
@@ -37,11 +37,11 @@ Quota=$(cat /etc/vless/$user)
 uuid=$(grep -E "^### " "/etc/vless/.vless.db" | cut -d ' ' -f 4 | sed -n "${CLIENT_NUMBER}"p)
 Quota=$(grep -E "^### " "/etc/vless/.vless.db" | cut -d ' ' -f 5 | sed -n "${CLIENT_NUMBER}"p)
 exp=$(grep -E "^#& " "/etc/xray/config.json" | cut -d ' ' -f 3 | sed -n "${CLIENT_NUMBER}"p)
-hariini=`date -d "0 days" +"%Y-%m-%d"`
-cat >/var/www/html/vless-$user.txt <<-END
+hariini=$(date -d "0 days" +"%Y-%m-%d")
+cat > /var/www/html/vless-$user.txt <<- END
 
 ◇━━━━━━━━━━━━━━━━━◇
-  Dragon Emperor Tunneling 
+  starlink 
 ◇━━━━━━━━━━━━━━━━━◇
 # Format Vless WS TLS
 
@@ -106,6 +106,8 @@ ${vlesslink2}
 Link GRPC     : 
 ${vlesslink3}
 ◇━━━━━━━━━━━━━━━━━◇
+END
+
 vlesslink1="vless://${uuid}@${domain}:443?path=/vless&security=tls&encryption=none&type=ws#${user}"
 vlesslink2="vless://${uuid}@${domain}:80?path=/vless&encryption=none&type=ws#${user}"
 vlesslink3="vless://${uuid}@${domain}:443?mode=gun&security=tls&encryption=none&type=grpc&serviceName=vless-grpc&sni=${domain}#${user}"

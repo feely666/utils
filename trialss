@@ -35,15 +35,15 @@ clear
 sspwd=$(cat /etc/xray/passwd)
 clear
 source /var/lib/xox/ipvps.conf
-if [[ "$IP" = "" ]]; then
-domain=$(cat /etc/xray/domain)
+if [[ $IP == "" ]]; then
+ domain=$(cat /etc/xray/domain)
 else
-domain=$IP
+ domain=$IP
 fi
 clear
 masaaktif=1
 Quota=5
-user=Trial-SS`</dev/urandom tr -dc 0-9 | head -c3`
+user=Trial-SS$(< /dev/urandom tr -dc 0-9 | head -c3)
 clear
 cipher="aes-128-gcm"
 uuid=$(cat /proc/sys/kernel/random/uuid)
@@ -79,7 +79,7 @@ systemctl restart xray
 #buatshadowsocks custom
 rm -rf /tmp/log
 rm -rf /tmp/log1
-cat > /var/www/html/sodosokws-$user.txt <<-END
+cat > /var/www/html/sodosokws-$user.txt <<- END
 { 
  "dns": {
     "servers": [
@@ -186,7 +186,7 @@ cat > /var/www/html/sodosokws-$user.txt <<-END
   "stats": {}
 }
 END
-cat > /var/www/html/sodosokgrpc-$user.txt <<-END
+cat > /var/www/html/sodosokgrpc-$user.txt <<- END
 {
     "dns": {
     "servers": [
@@ -291,27 +291,27 @@ cat > /var/www/html/sodosokgrpc-$user.txt <<-END
   "stats": {}
 }
 END
-systemctl reload xray >/dev/null 2>&1
-service cron restart >/dev/null 2>&1
+systemctl reload xray > /dev/null 2>&1
+service cron restart > /dev/null 2>&1
 if [ ! -e /etc/shadowsocks ]; then
-  mkdir -p /etc/shadowsocks
+ mkdir -p /etc/shadowsocks
 fi
 
 if [ -z ${Quota} ]; then
-  Quota="0"
+ Quota="0"
 fi
 
 c=$(echo "${Quota}" | sed 's/[^0-9]*//g')
-d=$((${c} * 1024 * 1024 * 1024))
+d=$((c * 1024 * 1024 * 1024))
 
 if [[ ${c} != "0" ]]; then
-  echo "${d}" >/etc/shadowsocks/${user}
+ echo "${d}" > /etc/shadowsocks/${user}
 fi
 DATADB=$(cat /etc/shadowsocks/.shadowsocks.db | grep "^###" | grep -w "${user}" | awk '{print $2}')
-if [[ "${DATADB}" != '' ]]; then
-  sed -i "/\b${user}\b/d" /etc/shadowsocks/.shadowsocks.db
+if [[ ${DATADB} != '' ]]; then
+ sed -i "/\b${user}\b/d" /etc/shadowsocks/.shadowsocks.db
 fi
-echo "### ${user} ${exp} ${uuid}" >>/etc/shadowsocks/.shadowsocks.db
+echo "### ${user} ${exp} ${uuid}" >> /etc/shadowsocks/.shadowsocks.db
 clear
 
 clear

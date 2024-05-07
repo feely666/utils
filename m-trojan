@@ -46,25 +46,25 @@ echo -e "\033[1;93m└───────────────────�
 echo -e ""
 read -p "Select From Options [ 1 - 6 ] : " menu
 case $menu in
-1)
-    addtr
-    ;;
-2)
-    trialtr
-    ;;
-3)
-    deltr
-    ;;
-4)
-    renewtr
-    ;;
-5)
-    cektr
-    ;;
-6)
-    user-tr
-    ;;
-*)
-    menu
-    ;;
+ 1)
+  addtr
+  ;;
+ 2)
+  trialtr
+  ;;
+ 3)
+  deltr
+  ;;
+ 4)
+  renewtr
+  ;;
+ 5)
+  cektr
+  ;;
+ 6)
+  user-tr
+  ;;
+ *)
+  menu
+  ;;
 esac
